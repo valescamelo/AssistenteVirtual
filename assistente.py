@@ -23,7 +23,7 @@ def ouvir(): #verifica ou audio do microfone e converte em texto
             return "Você não informou nada. Tempo egostado!"
         
 def assistente(): #principal função do assistente virtual
-    falar('Olá! Sou sua assistente virtual. No que posso ajudar? ')
+    falar('Olá! Sou sua assistente virtual. No que posso ajudar?')
 
     while True:
         informacao = ouvir()
@@ -32,9 +32,9 @@ def assistente(): #principal função do assistente virtual
         if "sair" in informacao:
             falar('Até logo')
             break
-        elif 'Olá' in informacao or "Oi" in informacao:
+        elif "olá" in informacao or "oi" in informacao:
             falar('Olá! Como posso ajudar você?')
-        elif 'Está tudo bem?' in informacao:
+        elif "está tudo bem?" in informacao:
             falar('Estou bem, obrigada!')
         else: 
             falar("Desculpe. Ainda não sei resolver isso.")
