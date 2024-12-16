@@ -4,11 +4,11 @@ Estudar programação é um desafio, mas também uma experiência transformadora
 
 Embora ainda esteja em andamento, o projeto já conta com funcionalidades como:
 
-:relógio_3: Consulta de horas.
+:time: Consulta de horas.
 
 :globo_com_meridianos: Pesquisa na web por meio de um navegador integrado.
 
-:nuvem: Previsão do tempo utilizando a API OpenWeatherMap.
+:cloud: Previsão do tempo utilizando a API OpenWeatherMap.
 
 :jornal: Consulta de notícias com integração à API NewsAPI.
 
