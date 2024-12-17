@@ -1,4 +1,6 @@
 #etapas do criação do programa assistente virtual 
+import tkinter as tk
+from tkinter import scrolledtext
 import speech_recognition as sr
 import pyttsx3
 import webbrowser
@@ -14,7 +16,8 @@ def falar(texto): #transforma texto em fala
 def ouvir(): #verifica ou audio do microfone e converte em texto
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        print('Aguardando...')
+        saida_texto.insert(tk.END, "Assistente: Estou ouvindo..\n")
+        janela.update()
         try:
             audio = recognizer.listen(source, timeout=5)
             informacao = recognizer.recognize_google(audio, language='pt-BR')
@@ -51,7 +54,7 @@ def previsao_tempo(cidade): #função para obter previsão do tempo usando a API
         return "Houve um problema ao verificar a previsão do tempo."
 
 def noticias(): #últimas noticias utilizando a API NewsAPI
-    url=("https://newsapi.org/v2/top-headlines?country=br&apiKey=d9b07398b5c84077bf9e5103bb05197c")
+    url=("https://newsapi.org/v2/top-headlines?q=br&apiKey=d9b07398b5c84077bf9e5103bb05197c")
     try:
         resposta = requests.get(url)
         resposta.raise_for_status() #gera o erro caso o codigo não for 200
@@ -66,45 +69,78 @@ def noticias(): #últimas noticias utilizando a API NewsAPI
     
     except Exception as e:
         return "Houve um erro ao tentar acessar as notícias."
+    
 
-def assistente(): #principal função do assistente virtual
-    falar('Olá! Sou sua assistente virtual. No que posso ajudar?')
+def assistente(informacao): #principal função do assistente virtual
+    #falar('Olá! Sou sua assistente virtual. No que posso ajudar?')
 
-    while True:
-        informacao = ouvir()
-        print(f'Você disse: {informacao}')
+    #while True:
+        #informacao = ouvir()
+        #print(f'Você disse: {informacao}')
 
-        if "sair" in informacao:
-            falar('Até logo')
-            break
-        elif "olá" in informacao or "oi" in informacao:
-            falar('Olá! Como posso ajudar você?')
-        elif "está tudo bem?" in informacao:
-            falar('Estou bem, obrigada!')
-        elif "me informe a hora" in informacao:
-            hora = consultar_hr
-            falar(hora)
-        elif "pesquisar" in informacao:
-            falar("Qual é a pesquisa de hoje?")
-            termo = ouvir()
-            if termo != "Não entendi o que você disse":
-                resultado = pesquisar_google(termo)
-                falar(resultado)
-            else:
-                falar("Não entendi o que você quer pesquisar")
-        elif "previsão do tempo" in informacao:
-            falar("Para qual cidade deseja saber a previsão?")
-            cidade = ouvir()
-            if cidade != "Não compreendi o que você disse.":
-                previsao = previsao_tempo(cidade)
-                falar(previsao)
-            else:
-                falar("Não consegui entender a cidade informada.")
-        elif "notícias" in informacao:
-            pesq_noticias = noticias()
-            falar(pesq_noticias)
-        else: 
-            falar("Desculpe. Ainda não sei resolver isso.")
+    if "sair" in informacao:
+        falar('Até logo')
+        janela.quit()
+    elif "olá" in informacao or "oi" in informacao:
+        resposta = 'Olá! Como posso ajudar você?'
+    elif "está tudo bem?" in informacao:
+        resposta = 'Estou bem, obrigada!'
+    elif "me informe a hora" in informacao:
+        resposta = consultar_hr
+    elif "pesquisar" in informacao:
+        falar("Qual é a pesquisa de hoje?")
+        pesquisa = ouvir()
+        resposta = pesquisar_google(pesquisa)
+    #elif "previsão do tempo" in informacao:
+            #falar("Para qual cidade deseja saber a previsão?")
+            #cidade = ouvir()
+            #resposta = cidade
+            #if cidade != "Não compreendi o que você disse.":
+                #previsao = previsao_tempo(cidade)
+                #falar(previsao)
+            #else:
+                #falar("Não consegui entender a cidade informada.")
+    #elif "notícias" in informacao:
+            #pesq_noticias = noticias()
+            #falar(pesq_noticias)
+    else: 
+        resposta = "Desculpe. Ainda não sei resolver isso."
+    saida_texto.insert(tk.END, f'Você: {informacao}\nAssistente: {resposta} ')
+    falar(resposta)
+
+def executar_assistente():
+    informcao = ouvir()
+    if informcao:
+        assistente(informcao)
+    else: 
+        saida_texto.insert(tk.END, "Assistente: Não entendi. Tente novamente.\n")
+
+
+#Interface gráfica com Tkinter
+janela = tk.Tk()
+janela.title("Assistente Virtual Pessoal")
+
+#Configurações dos elementos da interface gráfica 
+
+saida_texto=scrolledtext.ScrolledText(janela, wrap=tk.WORD, width=50, height=20, font=("Arial", 12))
+saida_texto.pack(pady=10)
+
+botao_ouvir = tk.Button(janela, text="Falar com a Assistente", command=executar_assistente, bg="#4CAF50", fg="white", font=("Arial", 12))
+botao_ouvir.pack(pady=10)
+
+texto_manual = tk.Entry(janela, width=50, font=("Arial", 12))
+texto_manual.pack(pady=5)
+
+def informacao_manual():
+    informacao = texto_manual.get()
+    texto_manual.delete(0, tk.END)
+    executar_assistente(informacao)
+
+botao_enviar = tk.Button(janela, text="Enviar Comando", command=informacao_manual, bg="#008CBA", fg="white", font=("Arial", 12))
+botao_enviar.pack(pady=5)
+
+    
+
 
 if __name__ == "__main__": #executando a principal função do código
     assistente()
