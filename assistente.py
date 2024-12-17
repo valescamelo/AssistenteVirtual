@@ -72,12 +72,6 @@ def noticias(): #últimas noticias utilizando a API NewsAPI
     
 
 def assistente(informacao): #principal função do assistente virtual
-    #falar('Olá! Sou sua assistente virtual. No que posso ajudar?')
-
-    #while True:
-        #informacao = ouvir()
-        #print(f'Você disse: {informacao}')
-
     if "sair" in informacao:
         falar('Até logo')
         janela.quit()
@@ -91,15 +85,10 @@ def assistente(informacao): #principal função do assistente virtual
         falar("Qual é a pesquisa de hoje?")
         pesquisa = ouvir()
         resposta = pesquisar_google(pesquisa)
-    #elif "previsão do tempo" in informacao:
-            #falar("Para qual cidade deseja saber a previsão?")
-            #cidade = ouvir()
-            #resposta = cidade
-            #if cidade != "Não compreendi o que você disse.":
-                #previsao = previsao_tempo(cidade)
-                #falar(previsao)
-            #else:
-                #falar("Não consegui entender a cidade informada.")
+    elif "previsão do tempo" in informacao:
+        falar("Para qual cidade deseja saber a previsão?")
+        cidade = ouvir()
+        resposta = previsao_tempo(cidade)
     #elif "notícias" in informacao:
             #pesq_noticias = noticias()
             #falar(pesq_noticias)
@@ -139,9 +128,11 @@ def informacao_manual():
 botao_enviar = tk.Button(janela, text="Enviar Comando", command=informacao_manual, bg="#008CBA", fg="white", font=("Arial", 12))
 botao_enviar.pack(pady=5)
 
+
+#Executar a interface
+falar("Assistente iniciada com sucesso")
+janela.mainloop()
     
-
-
-if __name__ == "__main__": #executando a principal função do código
-    assistente()
+#if __name__ == "__main__": #executando a principal função do código
+    #assistente()
 
