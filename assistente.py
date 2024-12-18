@@ -1,5 +1,6 @@
 #etapas do criação do programa assistente virtual 
 import tkinter as tk
+from tkinter import ttk
 from tkinter import scrolledtext
 import speech_recognition as sr
 import pyttsx3
@@ -16,7 +17,7 @@ def falar(texto): #transforma texto em fala
 def ouvir(): #verifica ou audio do microfone e converte em texto
     recognizer = sr.Recognizer()
     with sr.Microphone() as source:
-        saida_texto.insert(tk.END, "Assistente: Estou ouvindo..\n")
+        saida_texto.insert(ttk.END, "Assistente: Estou ouvindo..\n")
         janela.update()
         try:
             audio = recognizer.listen(source, timeout=5)
@@ -114,18 +115,18 @@ janela.title("Assistente Virtual Pessoal")
 saida_texto=scrolledtext.ScrolledText(janela, wrap=tk.WORD, width=50, height=20, font=("Arial", 12))
 saida_texto.pack(pady=10)
 
-botao_ouvir = tk.Button(janela, text="Falar com a Assistente", command=executar_assistente, bg="#4CAF50", fg="white", font=("Arial", 12))
+botao_ouvir = ttk.Button(janela, text="Falar com a Assistente", command=executar_assistente, bg="#4CAF50", fg="white", font=("Arial", 12))
 botao_ouvir.pack(pady=10)
 
-texto_manual = tk.Entry(janela, width=50, font=("Arial", 12))
+texto_manual = ttk.Entry(janela, width=50, font=("Arial", 12))
 texto_manual.pack(pady=5)
 
 def informacao_manual():
     informacao = texto_manual.get()
-    texto_manual.delete(0, tk.END)
-    executar_assistente(informacao)
+    texto_manual.delete(0, ttk.END)
+    assistente(informacao)
 
-botao_enviar = tk.Button(janela, text="Enviar Comando", command=informacao_manual, bg="#008CBA", fg="white", font=("Arial", 12))
+botao_enviar = ttk.Button(janela, text="Enviar Mensagem", command=informacao_manual, bg="#008CBA", fg="white", font=("Arial", 12))
 botao_enviar.pack(pady=5)
 
 
